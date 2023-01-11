@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:matter_most_app/data/db/utils.dart';
 import 'package:matter_most_app/data/routes/app_routes.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+
+  //for open all boxes
+  for (String item in boxNames) {
+    await Hive.openBox(item);
+  }
+
   runApp(const MyApp());
 }
 
