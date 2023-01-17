@@ -82,26 +82,33 @@ getChatItems(GetAllPostsResponse allPosts) {
   List<PostResponse?>? posts =
       allPosts.order?.map((e) => allPosts.posts![e]).toList();
 
-  return ListView.builder(
-    itemCount: posts?.length ?? 0,
-    itemBuilder: (context, index) => Container(
-      margin: const EdgeInsets.only(top: 10),
-      child: Row(
-        mainAxisAlignment: posts![index]!.userId == 'wjjagne6ei8r7gaftq6z5ri8me'
-            ? MainAxisAlignment.start
-            : MainAxisAlignment.end,
-        children: [
-          Container(
-            padding: EdgeInsets.all(10),
-            margin: EdgeInsets.symmetric(horizontal: 4),
-            decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(12)),
-            child: Text(
-              posts[index]!.message!,
-            ),
-          )
-        ],
+  return Container(
+    alignment: AlignmentDirectional.topCenter,
+    child: ListView.builder(
+      itemCount: posts?.length ?? 0,
+      reverse: true,
+      itemBuilder: (context, index) => Container(
+        margin: const EdgeInsets.only(top: 10),
+        child: Row(
+          mainAxisAlignment:
+              posts![index]!.userId == 'wjjagne6ei8r7gaftq6z5ri8me'
+                  ? MainAxisAlignment.start
+                  : MainAxisAlignment.end,
+          children: [
+            Container(
+              padding: EdgeInsets.all(10),
+              margin: EdgeInsets.symmetric(horizontal: 4),
+              decoration: BoxDecoration(
+                  color: posts[index]!.userId == 'wjjagne6ei8r7gaftq6z5ri8me'
+                      ? Theme.of(context).primaryColor.withOpacity(0.2)
+                      : Colors.grey[300],
+                  borderRadius: BorderRadius.circular(12)),
+              child: Text(
+                posts[index]!.message!,
+              ),
+            )
+          ],
+        ),
       ),
     ),
   );
