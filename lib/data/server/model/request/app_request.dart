@@ -1,5 +1,5 @@
 // response for login user
-Map<String, dynamic> loginResponse(
+Map<String, dynamic> loginRequest(
     {required String loginId, required String password}) {
   final Map<String, dynamic> map = {};
 
