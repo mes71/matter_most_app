@@ -23,3 +23,8 @@ Future<Response> getUsersOfTeam(
         {required String teamId, required String token}) async =>
     await dioWithToken(token: token)
         .get('$baseUrl/users', queryParameters: {'in_team': teamId});
+
+Future<Response> getPostsForChannel(
+        {required String token,
+        String channelId = 'yxtqfiabu3y6jjdximtbcs1ojc'}) async =>
+    await dioWithToken(token: token).get('$baseUrl/channels/$channelId/posts');

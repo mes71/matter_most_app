@@ -92,7 +92,8 @@ class _AuthScreenState extends State<AuthScreen> {
 
                       localRepository
                           .writeUserRepository(userDbModelFromRemote(res));
-                      goHome();
+
+                      goToChat();
                     },
                     child: Text('Login'))
               ],
@@ -105,5 +106,9 @@ class _AuthScreenState extends State<AuthScreen> {
 
   void goHome() {
     context.go(HOME_ROUTE);
+  }
+
+  void goToChat() {
+    context.go(CHAT_ROUTE);
   }
 }
