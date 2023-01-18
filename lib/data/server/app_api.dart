@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:matter_most_app/data/server/model/request/app_request.dart';
 
 const String baseUrl = 'https://mm.atwork.ir/api/v4';
+const String baseSocketUrl = 'wss://mm.atwork.ir/api/v4/websocket';
 
 Dio dioWithToken({required String token}) {
   Dio dio = Dio();

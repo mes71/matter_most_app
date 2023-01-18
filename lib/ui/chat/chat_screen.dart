@@ -18,6 +18,13 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textEditingController = TextEditingController();
 
+
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
