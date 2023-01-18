@@ -28,3 +28,12 @@ class ChatFailure extends ChatState {
   @override
   List<Object> get props => [errorMsg];
 }
+
+class PostCreateSuccess extends ChatState {
+  final String message;
+
+  const PostCreateSuccess(this.message);
+
+  @override
+  List<Object> get props => [message];
+}

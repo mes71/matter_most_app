@@ -7,3 +7,11 @@ Map<String, dynamic> loginRequest(
   map['password'] = password;
   return map;
 }
+
+Map<String, dynamic> createPostRequest(
+    {required String channelId, required String message}) {
+  final map = <String, dynamic>{};
+  map['channel_id'] = channelId;
+  map['message'] = message;
+  return map;
+}

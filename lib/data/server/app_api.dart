@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:matter_most_app/data/server/model/request/app_request.dart';
 
-const String baseUrl = 'http://172.19.0.1:8065/api/v4';
+const String baseUrl = 'https://mm.atwork.ir/api/v4';
 
 Dio dioWithToken({required String token}) {
   Dio dio = Dio();
@@ -26,5 +26,12 @@ Future<Response> getUsersOfTeam(
 
 Future<Response> getPostsForChannel(
         {required String token,
-        String channelId = 'yxtqfiabu3y6jjdximtbcs1ojc'}) async =>
+        String channelId = '8t5tibt5ktdajx1r9dza4r8gte'}) async =>
     await dioWithToken(token: token).get('$baseUrl/channels/$channelId/posts');
+
+Future<Response> createPost(
+        {required String token,
+        required Map<String, dynamic> message,
+        String channelId = '8t5tibt5ktdajx1r9dza4r8gte'}) async =>
+    await dioWithToken(token: token)
+        .post('$baseUrl/posts?set_online=true', data: message);

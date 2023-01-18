@@ -1,5 +1,6 @@
 import 'package:matter_most_app/data/server/model/responses/User_teams.dart';
 import 'package:matter_most_app/data/server/model/responses/login_request.dart';
+import 'package:matter_most_app/data/server/model/responses/post/create_post_response.dart';
 import 'package:matter_most_app/data/server/model/responses/post/get_all_posts_response.dart';
 import 'package:matter_most_app/data/source/remote_datasource.dart';
 
@@ -15,6 +16,9 @@ abstract class IRemoteRepository {
 
   Future<GetAllPostsResponse> getAllPostsChannelsRepository(
       {required String token});
+
+  Future<CreatePostResponse> createPostRepository(
+      {required String token, required Map<String, dynamic> message});
 }
 
 class RemoteRepository implements IRemoteRepository {
@@ -44,6 +48,16 @@ class RemoteRepository implements IRemoteRepository {
   Future<GetAllPostsResponse> getAllPostsChannelsRepository(
           {required String token}) async =>
       await remoteDatasource.getAllPostsChannelDataSource(token: token);
+
+  @override
+  Future<CreatePostResponse> createPostRepository(
+          {required String token,
+          required Map<String, dynamic> message}) async =>
+      await remoteDatasource.createPostDataSource(
+          token: token, message: message);
+
+
+
 }
 
 IRemoteRepository remoteRepository = RemoteRepository(remoteDatasource);

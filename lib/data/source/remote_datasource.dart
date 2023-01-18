@@ -1,6 +1,7 @@
 import 'package:matter_most_app/data/server/app_api.dart';
 import 'package:matter_most_app/data/server/model/responses/User_teams.dart';
 import 'package:matter_most_app/data/server/model/responses/login_request.dart';
+import 'package:matter_most_app/data/server/model/responses/post/create_post_response.dart';
 import 'package:matter_most_app/data/server/model/responses/post/get_all_posts_response.dart';
 
 abstract class IRemoteDatasource {
@@ -15,6 +16,9 @@ abstract class IRemoteDatasource {
 
   Future<GetAllPostsResponse> getAllPostsChannelDataSource(
       {required String token});
+
+  Future<CreatePostResponse> createPostDataSource(
+      {required String token, required Map<String, dynamic> message});
 }
 
 class RemoteDataSource implements IRemoteDatasource {
@@ -51,6 +55,13 @@ class RemoteDataSource implements IRemoteDatasource {
       {required String token}) async {
     var res = await getPostsForChannel(token: token);
     return GetAllPostsResponse.fromJson(res.data);
+  }
+
+  @override
+  Future<CreatePostResponse> createPostDataSource(
+      {required String token, required Map<String, dynamic> message}) async {
+    var res = await createPost(token: token, message: message);
+    return CreatePostResponse.fromJson(res.data);
   }
 }
 
