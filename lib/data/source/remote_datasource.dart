@@ -5,13 +5,15 @@ import 'package:matter_most_app/data/server/model/responses/post/create_post_res
 import 'package:matter_most_app/data/server/model/responses/post/get_all_posts_response.dart';
 
 abstract class IRemoteDatasource {
-  Future<LoginResponse> loginDatasource(
+  Future<UserResponse> loginDatasource(
       {required String loginId, required String password});
 
   Future<UserTeams> getUserTeamDataSource(
       {required String userId, required String token});
 
-  Future<List<LoginResponse>> getUsersOfTeamsDataSource(
+  Future<List<UserResponse>> getAllUsersDataSource({required String token});
+
+  Future<List<UserResponse>> getUsersOfTeamsDataSource(
       {required String teamId, required String token});
 
   Future<GetAllPostsResponse> getAllPostsChannelDataSource(
@@ -23,11 +25,11 @@ abstract class IRemoteDatasource {
 
 class RemoteDataSource implements IRemoteDatasource {
   @override
-  Future<LoginResponse> loginDatasource(
+  Future<UserResponse> loginDatasource(
       {required String loginId, required String password}) async {
     var res = await loginAPI(loginId: loginId, password: password);
 
-    return LoginResponse.fromJson(res.data,
+    return UserResponse.fromJson(res.data,
         token: res.headers.map['token']!.first);
   }
 
@@ -40,12 +42,12 @@ class RemoteDataSource implements IRemoteDatasource {
   }
 
   @override
-  Future<List<LoginResponse>> getUsersOfTeamsDataSource(
+  Future<List<UserResponse>> getUsersOfTeamsDataSource(
       {required String teamId, required String token}) async {
-    List<LoginResponse> userList = [];
-    var res = await getUsersOfTeam(teamId: teamId, token: token);
+    List<UserResponse> userList = [];
+    var res = await getAllUsersOfTeam(teamId: teamId, token: token);
     for (var item in res.data) {
-      userList.add(LoginResponse.fromJson(item, token: ''));
+      userList.add(UserResponse.fromJson(item, token: ''));
     }
     return userList;
   }
@@ -62,6 +64,17 @@ class RemoteDataSource implements IRemoteDatasource {
       {required String token, required Map<String, dynamic> message}) async {
     var res = await createPost(token: token, message: message);
     return CreatePostResponse.fromJson(res.data);
+  }
+
+  @override
+  Future<List<UserResponse>> getAllUsersDataSource(
+      {required String token}) async {
+    List<UserResponse> result = [];
+    var res = await getAllUsers(token: token);
+    for (var item in res.data) {
+      result.add(UserResponse.fromJson(item, token: ''));
+    }
+    return result;
   }
 }
 

@@ -20,10 +20,13 @@ Future<Response> getTeamUser(
         {required String userId, required String token}) async =>
     await dioWithToken(token: token).get('$baseUrl/users/$userId/teams');
 
-Future<Response> getUsersOfTeam(
+Future<Response> getAllUsersOfTeam(
         {required String teamId, required String token}) async =>
     await dioWithToken(token: token)
         .get('$baseUrl/users', queryParameters: {'in_team': teamId});
+
+Future<Response> getAllUsers({required String token}) async =>
+    await dioWithToken(token: token).get('$baseUrl/users');
 
 Future<Response> getPostsForChannel(
         {required String token,

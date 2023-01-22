@@ -5,13 +5,13 @@ import 'package:matter_most_app/data/server/model/responses/post/get_all_posts_r
 import 'package:matter_most_app/data/source/remote_datasource.dart';
 
 abstract class IRemoteRepository {
-  Future<LoginResponse> loginRepository(
+  Future<UserResponse> loginRepository(
       {required String loginId, required String password});
 
   Future<UserTeams> getUserTeamRepository(
       {required String userId, required String token});
 
-  Future<List<LoginResponse>> getUsersOfTeamsRepository(
+  Future<List<UserResponse>> getUsersOfTeamsRepository(
       {required String teamId, required String token});
 
   Future<GetAllPostsResponse> getAllPostsChannelsRepository(
@@ -19,6 +19,8 @@ abstract class IRemoteRepository {
 
   Future<CreatePostResponse> createPostRepository(
       {required String token, required Map<String, dynamic> message});
+
+  Future<List<UserResponse>> getAllUsersRepository({required String token});
 }
 
 class RemoteRepository implements IRemoteRepository {
@@ -27,7 +29,7 @@ class RemoteRepository implements IRemoteRepository {
   RemoteRepository(this.remoteDatasource);
 
   @override
-  Future<LoginResponse> loginRepository(
+  Future<UserResponse> loginRepository(
           {required String loginId, required String password}) async =>
       await remoteDatasource.loginDatasource(
           loginId: loginId, password: password);
@@ -39,7 +41,7 @@ class RemoteRepository implements IRemoteRepository {
           userId: userId, token: token);
 
   @override
-  Future<List<LoginResponse>> getUsersOfTeamsRepository(
+  Future<List<UserResponse>> getUsersOfTeamsRepository(
           {required String teamId, required String token}) async =>
       await remoteDatasource.getUsersOfTeamsDataSource(
           teamId: teamId, token: token);
@@ -56,8 +58,10 @@ class RemoteRepository implements IRemoteRepository {
       await remoteDatasource.createPostDataSource(
           token: token, message: message);
 
-
-
+  @override
+  Future<List<UserResponse>> getAllUsersRepository(
+          {required String token}) async =>
+      await remoteDatasource.getAllUsersDataSource(token: token);
 }
 
 IRemoteRepository remoteRepository = RemoteRepository(remoteDatasource);

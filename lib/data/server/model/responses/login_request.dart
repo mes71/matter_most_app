@@ -18,8 +18,8 @@
 /// timezone : {"automaticTimezone":"Asia/Tehran","manualTimezone":"","useAutomaticTimezone":"true"}
 /// disable_welcome_email : false
 
-class LoginResponse {
-  LoginResponse({
+class UserResponse {
+  UserResponse({
     String? id,
     String? token,
     num? createAt,
@@ -63,7 +63,7 @@ class LoginResponse {
     _disableWelcomeEmail = disableWelcomeEmail;
   }
 
-  LoginResponse.fromJson(dynamic json, {required String token}) {
+  UserResponse.fromJson(dynamic json, {required String token}) {
     _id = json['id'];
     _token = token;
     _createAt = json['create_at'];
@@ -110,7 +110,7 @@ class LoginResponse {
   Timezone? _timezone;
   bool? _disableWelcomeEmail;
 
-  LoginResponse copyWith({
+  UserResponse copyWith({
     String? id,
     num? createAt,
     num? updateAt,
@@ -131,7 +131,7 @@ class LoginResponse {
     Timezone? timezone,
     bool? disableWelcomeEmail,
   }) =>
-      LoginResponse(
+      UserResponse(
         id: id ?? _id,
         createAt: createAt ?? _createAt,
         updateAt: updateAt ?? _updateAt,

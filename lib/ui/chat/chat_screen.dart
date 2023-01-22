@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +9,7 @@ import 'package:matter_most_app/data/server/model/responses/post/get_all_posts_r
 import 'package:matter_most_app/data/server/model/responses/post/post_response.dart';
 import 'package:matter_most_app/ui/chat/chat_bloc.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -18,13 +21,6 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textEditingController = TextEditingController();
 
-
-
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -32,7 +28,7 @@ class _ChatScreenState extends State<ChatScreen> {
         var bloc = ChatBloc(
             localRepository: localRepository,
             remoteRepository: remoteRepository);
-        bloc.add(ChatStart());
+        bloc.add(ChatStartEvent());
         return bloc;
       },
       child: BlocConsumer<ChatBloc, ChatState>(
@@ -82,6 +78,16 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   TextField(
                     controller: _textEditingController,
+                    onTap: () {
+                      channel.sink.add(jsonEncode({
+                        "action": "user_typing",
+                        "seq": 2,
+                        "data": {
+                          "channel_id": "8t5tibt5ktdajx1r9dza4r8gte",
+                          "parent_id": "jmtmmxtenpreug3yw9ma56r6ww"
+                        }
+                      }));
+                    },
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(horizontal: 4),
                         suffix: IconButton(
@@ -89,7 +95,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               if (_textEditingController.text
                                   .trim()
                                   .isNotEmpty) {
-                                context.read<ChatBloc>().add(CreatePost(
+                                context.read<ChatBloc>().add(CreatePostEvent(
                                     _textEditingController.text.trim()));
                               }
                             },
@@ -98,7 +104,12 @@ class _ChatScreenState extends State<ChatScreen> {
                   )
                 } else if (state is ChatFailure) ...{
                   showErrorBanner(state.errorMsg)
-                }
+                },
+                StreamBuilder(
+                  builder: (context, snapshot) =>
+                      Text(snapshot.hasData ? snapshot.data.toString() : 'No'),
+                  stream: listonToChannel(),
+                )
               ],
             ),
           );
@@ -116,6 +127,17 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ),
       );
+
+  Stream<dynamic> listonToChannel() {
+    channel.sink.add(
+      jsonEncode({
+        "seq": 1,
+        "action": "authentication_challenge",
+        "data": {"token": localRepository.readTokenRepository()}
+      }),
+    );
+    return channel.stream;
+  }
 }
 
 getChatItems(GetAllPostsResponse allPosts) {

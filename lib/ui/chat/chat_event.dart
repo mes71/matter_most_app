@@ -7,13 +7,17 @@ abstract class ChatEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class ChatStart extends ChatEvent {}
+class ChatStartEvent extends ChatEvent {}
 
-class CreatePost extends ChatEvent {
+class CreatePostEvent extends ChatEvent {
   final String message;
 
-  const CreatePost(this.message);
+  const CreatePostEvent(this.message);
 
   @override
   List<Object?> get props => [message];
 }
+
+class ChatAuthWithSocketEvent extends ChatEvent {}
+
+class ChatCloseSocketEvent extends ChatEvent {}

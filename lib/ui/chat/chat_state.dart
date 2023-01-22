@@ -12,7 +12,7 @@ class ChatInitial extends ChatState {}
 class ChatLoading extends ChatState {}
 
 class ChatSuccess extends ChatState {
-  final GetAllPostsResponse allPosts;
+  final Map<String, PostResponse> allPosts;
 
   const ChatSuccess(this.allPosts);
 

@@ -33,7 +33,7 @@ class UserDBModel extends HiveObject {
   bool? allowMarketing;
 }
 
-UserDBModel userDbModelFromRemote(LoginResponse response) {
+UserDBModel userDbModelFromRemote(UserResponse response) {
   UserDBModel userDBModel = UserDBModel();
 
   userDBModel.id = response.id;
@@ -48,6 +48,6 @@ UserDBModel userDbModelFromRemote(LoginResponse response) {
   return userDBModel;
 }
 
-List<UserDBModel> userDbModelListFormRemote(List<LoginResponse> response) {
-  return response.map((LoginResponse e) => userDbModelFromRemote(e)).toList();
+List<UserDBModel> userDbModelListFormRemote(List<UserResponse> response) {
+  return response.map((UserResponse e) => userDbModelFromRemote(e)).toList();
 }

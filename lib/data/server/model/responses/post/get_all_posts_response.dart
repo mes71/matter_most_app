@@ -37,8 +37,8 @@ class GetAllPostsResponse {
     _hasNext = json['has_next'];
   }
 
-  List<String>? _order;
-  Map<String, PostResponse>? _posts;
+  List<String> _order;
+  Map<String, PostResponse> _posts;
   String? _nextPostId;
   String? _prevPostId;
   bool? _hasNext;
@@ -58,9 +58,9 @@ class GetAllPostsResponse {
         hasNext: hasNext ?? _hasNext,
       );
 
-  List<String>? get order => _order;
+  List<String> get order => _order;
 
-  Map<String, PostResponse>? get posts => _posts;
+  Map<String, PostResponse> get posts => _posts;
 
   String? get nextPostId => _nextPostId;
 

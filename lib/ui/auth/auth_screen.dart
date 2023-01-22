@@ -57,16 +57,15 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
                 ElevatedButton(
                     onPressed: () async {
-                      LoginResponse res =
-                          await remoteRepository.loginRepository(
-                              loginId: _usernameController.text,
-                              password: _passwordController.text);
+                      UserResponse res = await remoteRepository.loginRepository(
+                          loginId: _usernameController.text,
+                          password: _passwordController.text);
 
                       UserTeams userTeam =
                           await remoteRepository.getUserTeamRepository(
                               userId: res.id!, token: res.token!);
 
-                      List<LoginResponse> listOfUser =
+                      List<UserResponse> listOfUser =
                           await remoteRepository.getUsersOfTeamsRepository(
                               teamId: userTeam.id!, token: res.token!);
                       log(listOfUser.length.toString());
