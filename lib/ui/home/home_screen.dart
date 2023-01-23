@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          log(localRepository.readListOfUserRepository().length.toString());
+
           showModalBottomSheet(
             context: context,
             builder: (context) {

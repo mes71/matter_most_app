@@ -2,12 +2,12 @@ part of 'chat_bloc.dart';
 
 abstract class ChatEvent extends Equatable {
   const ChatEvent();
+}
 
+class ChatStartEvent extends ChatEvent {
   @override
   List<Object?> get props => [];
 }
-
-class ChatStartEvent extends ChatEvent {}
 
 class CreatePostEvent extends ChatEvent {
   final String message;
@@ -15,9 +15,15 @@ class CreatePostEvent extends ChatEvent {
   const CreatePostEvent(this.message);
 
   @override
-  List<Object?> get props => [message];
+  List<Object> get props => [message];
 }
 
-class ChatAuthWithSocketEvent extends ChatEvent {}
+class ChatAuthWithSocketEvent extends ChatEvent {
+  @override
+  List<Object?> get props => [];
+}
 
-class ChatCloseSocketEvent extends ChatEvent {}
+class ChatCloseSocketEvent extends ChatEvent {
+  @override
+  List<Object?> get props => [];
+}

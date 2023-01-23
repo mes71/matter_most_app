@@ -1,15 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matter_most_app/data/repository/local_repository.dart';
 import 'package:matter_most_app/data/repository/remote_repsitory.dart';
-import 'package:matter_most_app/data/server/model/responses/post/get_all_posts_response.dart';
 import 'package:matter_most_app/data/server/model/responses/post/post_response.dart';
 import 'package:matter_most_app/ui/chat/chat_bloc.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -74,19 +70,13 @@ class _ChatScreenState extends State<ChatScreen> {
                   )
                 } else if (state is ChatSuccess) ...{
                   Expanded(
-                    child: getChatItems(state.allPosts),
+                    child:
+                        getChatItems(posts: state.posts, orders: state.orders),
                   ),
                   TextField(
                     controller: _textEditingController,
-                    onTap: () {
-                      channel.sink.add(jsonEncode({
-                        "action": "user_typing",
-                        "seq": 2,
-                        "data": {
-                          "channel_id": "8t5tibt5ktdajx1r9dza4r8gte",
-                          "parent_id": "jmtmmxtenpreug3yw9ma56r6ww"
-                        }
-                      }));
+                    onSubmitted: (value){
+                      context.read<ChatBloc>().add(CreatePostEvent(value));
                     },
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(horizontal: 4),
@@ -97,6 +87,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                   .isNotEmpty) {
                                 context.read<ChatBloc>().add(CreatePostEvent(
                                     _textEditingController.text.trim()));
+
+                                _textEditingController.text = '';
+
                               }
                             },
                             icon:
@@ -105,11 +98,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 } else if (state is ChatFailure) ...{
                   showErrorBanner(state.errorMsg)
                 },
-                StreamBuilder(
+                /*StreamBuilder(
                   builder: (context, snapshot) =>
                       Text(snapshot.hasData ? snapshot.data.toString() : 'No'),
                   stream: listonToChannel(),
-                )
+                )*/
               ],
             ),
           );
@@ -128,7 +121,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       );
 
-  Stream<dynamic> listonToChannel() {
+/* Stream<dynamic> listonToChannel() {
     channel.sink.add(
       jsonEncode({
         "seq": 1,
@@ -137,17 +130,17 @@ class _ChatScreenState extends State<ChatScreen> {
       }),
     );
     return channel.stream;
-  }
+  }*/
 }
 
-getChatItems(GetAllPostsResponse allPosts) {
-  List<PostResponse?>? posts =
-      allPosts.order?.map((e) => allPosts.posts![e]).toList();
+getChatItems(
+    {required List<String> orders, required Map<String, PostResponse> posts}) {
+  List<PostResponse?> allPosts = orders.map((e) => posts[e]).toList();
 
   return Container(
     alignment: AlignmentDirectional.topCenter,
     child: ListView.builder(
-      itemCount: posts?.length ?? 0,
+      itemCount: posts.length ?? 0,
       reverse: true,
       itemBuilder: (context, index) => Container(
         margin: const EdgeInsets.only(
@@ -155,7 +148,7 @@ getChatItems(GetAllPostsResponse allPosts) {
         ),
         child: Row(
           mainAxisAlignment:
-              posts![index]!.userId == '5ak9ej4hu7fcp8t91ef13h6mhw'
+          allPosts[index]!.userId == '5ak9ej4hu7fcp8t91ef13h6mhw'
                   ? MainAxisAlignment.start
                   : MainAxisAlignment.end,
           children: [
@@ -163,12 +156,12 @@ getChatItems(GetAllPostsResponse allPosts) {
               padding: EdgeInsets.all(10),
               margin: EdgeInsets.symmetric(horizontal: 4),
               decoration: BoxDecoration(
-                  color: posts[index]!.userId == '5ak9ej4hu7fcp8t91ef13h6mhw'
+                  color: allPosts[index]!.userId == '5ak9ej4hu7fcp8t91ef13h6mhw'
                       ? Theme.of(context).primaryColor.withOpacity(0.2)
                       : Colors.grey[300],
                   borderRadius: BorderRadius.circular(12)),
               child: Text(
-                posts[index]!.message!,
+                allPosts[index]!.message!,
               ),
             )
           ],

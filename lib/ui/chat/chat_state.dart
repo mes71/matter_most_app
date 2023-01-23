@@ -2,22 +2,26 @@ part of 'chat_bloc.dart';
 
 abstract class ChatState extends Equatable {
   const ChatState();
-
-  @override
-  List<Object> get props => [];
 }
 
-class ChatInitial extends ChatState {}
+class ChatInitial extends ChatState {
+  @override
+  List<Object?> get props => [];
+}
 
-class ChatLoading extends ChatState {}
+class ChatLoading extends ChatState {
+  @override
+  List<Object?> get props => [];
+}
 
 class ChatSuccess extends ChatState {
-  final Map<String, PostResponse> allPosts;
+  final List<String> orders;
+  final Map<String, PostResponse> posts;
 
-  const ChatSuccess(this.allPosts);
+  const ChatSuccess({required this.orders, required this.posts});
 
   @override
-  List<Object> get props => [allPosts];
+  List<Object> get props => [orders, posts];
 }
 
 class ChatFailure extends ChatState {
@@ -26,7 +30,7 @@ class ChatFailure extends ChatState {
   const ChatFailure(this.errorMsg);
 
   @override
-  List<Object> get props => [errorMsg];
+  List<Object?> get props => [errorMsg];
 }
 
 class PostCreateSuccess extends ChatState {

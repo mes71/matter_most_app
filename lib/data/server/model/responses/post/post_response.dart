@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 /// id : "431g71z4h7nz9gjiu9xpkxezgc"
 /// create_at : 1673935503675
 /// update_at : 1673935503675
@@ -18,7 +20,7 @@
 /// participants : null
 /// metadata : {}
 
-class PostResponse {
+class PostResponse extends Equatable {
   PostResponse({
     String? id,
     num? createAt,
@@ -82,6 +84,7 @@ class PostResponse {
     _participants = json['participants'];
     _metadata = json['metadata'];
   }
+
   String? _id;
   num? _createAt;
   num? _updateAt;
@@ -101,6 +104,7 @@ class PostResponse {
   num? _lastReplyAt;
   dynamic _participants;
   dynamic _metadata;
+
   PostResponse copyWith({
     String? id,
     num? createAt,
@@ -143,24 +147,43 @@ class PostResponse {
         participants: participants ?? _participants,
         metadata: metadata ?? _metadata,
       );
+
   String? get id => _id;
+
   num? get createAt => _createAt;
+
   num? get updateAt => _updateAt;
+
   num? get editAt => _editAt;
+
   num? get deleteAt => _deleteAt;
+
   bool? get isPinned => _isPinned;
+
   String? get userId => _userId;
+
   String? get channelId => _channelId;
+
   String? get rootId => _rootId;
+
   String? get originalId => _originalId;
+
   String? get message => _message;
+
   String? get type => _type;
-  dynamic get props => _props;
+
+  dynamic get mprops => _props;
+
   String? get hashtags => _hashtags;
+
   String? get pendingPostId => _pendingPostId;
+
   num? get replyCount => _replyCount;
+
   num? get lastReplyAt => _lastReplyAt;
+
   dynamic get participants => _participants;
+
   dynamic get metadata => _metadata;
 
   Map<String, dynamic> toJson() {
@@ -191,4 +214,27 @@ class PostResponse {
   String toString() {
     return 'PostResponse{_id: $_id, _createAt: $_createAt, _updateAt: $_updateAt, _editAt: $_editAt, _deleteAt: $_deleteAt, _isPinned: $_isPinned, _userId: $_userId, _channelId: $_channelId, _rootId: $_rootId, _originalId: $_originalId, _message: $_message, _type: $_type, _props: $_props, _hashtags: $_hashtags, _pendingPostId: $_pendingPostId, _replyCount: $_replyCount, _lastReplyAt: $_lastReplyAt, _participants: $_participants, _metadata: $_metadata}';
   }
+
+  @override
+  List<Object?> get props => [
+        _id,
+        _createAt,
+        _updateAt,
+        _editAt,
+        _deleteAt,
+        _isPinned,
+        _userId,
+        _channelId,
+        _rootId,
+        _originalId,
+        _message,
+        _type,
+        _props,
+        _hashtags,
+        _pendingPostId,
+        _replyCount,
+        _lastReplyAt,
+        _participants,
+        _metadata
+      ];
 }
