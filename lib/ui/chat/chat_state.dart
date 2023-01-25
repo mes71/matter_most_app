@@ -31,7 +31,8 @@ class ChatSuccess extends ChatState {
   const ChatSuccess({required this.orders, required this.posts});
 
   @override
-  List<Object> get props => [orders, posts];
+  List<Object> get props =>
+      [orders, posts, posts.length, posts.keys, posts.entries, posts.values];
 }
 
 class ChatFailure extends ChatState {
