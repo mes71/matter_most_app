@@ -11,7 +11,6 @@ import 'package:matter_most_app/data/server/model/responses/post/post_response.d
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 part 'chat_event.dart';
-
 part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
@@ -41,7 +40,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           orders.addAll(allPostsResponse!.order);
           posts.addAll(allPostsResponse!.posts);
 
+          /*  orders.forEach((element) async {
+            await remoteRepository.deletePostRepository(
+                token: localRepository.readTokenRepository(), postId: element);
+          });*/
           emit(ChatSuccess(orders: orders, posts: posts));
+        } else {
+          emit(ChatIsEmpty());
         }
       } catch (e) {
         emit(ChatFailure(e.toString()));
@@ -50,6 +55,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     on<CreatePostEvent>((event, emit) async {
       try {
+        emit(ChatSendingPost());
         PostResponse response = await remoteRepository.createPostRepository(
             token: localRepository.readTokenRepository(),
             message: createPostRequest(
@@ -61,10 +67,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         List<String> newOrder = orders;
         Map<String, PostResponse> newPosts = posts;
 
-        emit(ChatSuccess(orders: newOrder, posts: newPosts));
-
-
-
+        emit(ChatSuccess(orders: orders, posts: posts));
       } catch (e) {
         log('Error ================>$e');
         emit(ChatFailure('$e'));

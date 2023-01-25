@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:matter_most_app/data/server/model/responses/User_teams.dart';
 import 'package:matter_most_app/data/server/model/responses/login_request.dart';
 import 'package:matter_most_app/data/server/model/responses/post/get_all_posts_response.dart';
@@ -21,6 +22,9 @@ abstract class IRemoteRepository {
       {required String token, required Map<String, dynamic> message});
 
   Future<List<UserResponse>> getAllUsersRepository({required String token});
+
+  Future<Response> deletePostRepository(
+      {required String token, required String postId});
 }
 
 class RemoteRepository implements IRemoteRepository {
@@ -62,6 +66,11 @@ class RemoteRepository implements IRemoteRepository {
   Future<List<UserResponse>> getAllUsersRepository(
           {required String token}) async =>
       await remoteDatasource.getAllUsersDataSource(token: token);
+
+  @override
+  Future<Response> deletePostRepository(
+          {required String token, required String postId}) async =>
+      remoteDatasource.deletePostDataSource(token: token, postId: postId);
 }
 
 IRemoteRepository remoteRepository = RemoteRepository(remoteDatasource);

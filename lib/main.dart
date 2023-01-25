@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:matter_most_app/data/db/model/user/user_db_model.dart';
 import 'package:matter_most_app/data/db/model/user/user_team/team_db_models.dart';
 import 'package:matter_most_app/data/db/utils.dart';
 import 'package:matter_most_app/data/routes/app_routes.dart';
+import 'package:matter_most_app/ui/chat/chat_observer.dart';
 
 Future<void> main() async {
+  Bloc.observer = ChatBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
 

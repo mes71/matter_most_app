@@ -14,6 +14,16 @@ class ChatLoading extends ChatState {
   List<Object?> get props => [];
 }
 
+class ChatIsEmpty extends ChatState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ChatSendingPost extends ChatState {
+  @override
+  List<Object?> get props => [];
+}
+
 class ChatSuccess extends ChatState {
   final List<String> orders;
   final Map<String, PostResponse> posts;

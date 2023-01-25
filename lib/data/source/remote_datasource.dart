@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:matter_most_app/data/server/app_api.dart';
 import 'package:matter_most_app/data/server/model/responses/User_teams.dart';
 import 'package:matter_most_app/data/server/model/responses/login_request.dart';
@@ -21,6 +22,9 @@ abstract class IRemoteDatasource {
 
   Future<PostResponse> createPostDataSource(
       {required String token, required Map<String, dynamic> message});
+
+  Future<Response> deletePostDataSource(
+      {required String token, required String postId});
 }
 
 class RemoteDataSource implements IRemoteDatasource {
@@ -76,6 +80,11 @@ class RemoteDataSource implements IRemoteDatasource {
     }
     return result;
   }
+
+  @override
+  Future<Response> deletePostDataSource(
+          {required String token, required String postId}) async =>
+      await deletePost(token: token, postId: postId);
 }
 
 IRemoteDatasource remoteDatasource = RemoteDataSource();

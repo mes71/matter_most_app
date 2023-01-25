@@ -28,6 +28,10 @@ Future<Response> getAllUsersOfTeam(
 Future<Response> getAllUsers({required String token}) async =>
     await dioWithToken(token: token).get('$baseUrl/users');
 
+Future<Response> deletePost(
+        {required String token, required String postId}) async =>
+    await dioWithToken(token: token).delete('$baseUrl/posts/$postId');
+
 Future<Response> getPostsForChannel(
         {required String token,
         String channelId = '8t5tibt5ktdajx1r9dza4r8gte'}) async =>

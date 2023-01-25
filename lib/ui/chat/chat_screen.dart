@@ -75,7 +75,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   TextField(
                     controller: _textEditingController,
-                    onSubmitted: (value){
+                    onSubmitted: (value) {
                       context.read<ChatBloc>().add(CreatePostEvent(value));
                     },
                     decoration: InputDecoration(
@@ -89,7 +89,6 @@ class _ChatScreenState extends State<ChatScreen> {
                                     _textEditingController.text.trim()));
 
                                 _textEditingController.text = '';
-
                               }
                             },
                             icon:
@@ -97,6 +96,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   )
                 } else if (state is ChatFailure) ...{
                   showErrorBanner(state.errorMsg)
+                } else if (state is ChatIsEmpty) ...{
+                  Center(
+                    child: Text('empty chat'),
+                  )
                 },
                 /*StreamBuilder(
                   builder: (context, snapshot) =>
@@ -141,14 +144,13 @@ getChatItems(
     alignment: AlignmentDirectional.topCenter,
     child: ListView.builder(
       itemCount: posts.length ?? 0,
-      reverse: true,
       itemBuilder: (context, index) => Container(
         margin: const EdgeInsets.only(
           top: 10,
         ),
         child: Row(
           mainAxisAlignment:
-          allPosts[index]!.userId == '5ak9ej4hu7fcp8t91ef13h6mhw'
+              allPosts[index]!.userId == '5ak9ej4hu7fcp8t91ef13h6mhw'
                   ? MainAxisAlignment.start
                   : MainAxisAlignment.end,
           children: [
