@@ -19,8 +19,12 @@ class CreatePostEvent extends ChatEvent {
 }
 
 class ChatAuthWithSocketEvent extends ChatEvent {
+  final WebSocketChannel channel;
+
+  ChatAuthWithSocketEvent(this.channel);
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [channel];
 }
 
 class ChatCloseSocketEvent extends ChatEvent {

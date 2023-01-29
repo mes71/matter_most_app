@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +6,6 @@ import 'package:matter_most_app/data/repository/remote_repsitory.dart';
 import 'package:matter_most_app/data/server/model/responses/post/post_response.dart';
 import 'package:matter_most_app/ui/chat/chat_bloc.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -20,12 +16,9 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textEditingController = TextEditingController();
-  WebSocketChannel channel = WebSocketChannel.connect(
-      Uri.parse('wss://mm.atwork.ir/api/v4/websocket'));
 
   @override
   Widget build(BuildContext context) {
-    listonToChannel(channel);
     return BlocProvider(
       create: (context) {
         var bloc = ChatBloc(
@@ -108,11 +101,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: Text('empty chat'),
                   )
                 },
-                /* StreamBuilder(
-                  builder: (context, snapshot) =>
-                      Text(snapshot.hasData ? snapshot.data.toString() : 'No'),
-                  stream: listonToChannel(),
-                )*/
               ],
             ),
           );
@@ -168,23 +156,4 @@ getChatItems(
       ),
     ),
   );
-}
-
-void listonToChannel(WebSocketChannel channel) {
-  channel.stream.listen(
-      (event) {
-        log(event.toString());
-        channel.sink.add(
-          jsonEncode({
-            "seq": 1,
-            "action": "authentication_challenge",
-            "data": {"token": localRepository.readTokenRepository()}
-          }),
-        );
-        log(event.toString());
-      },
-      onError: (e) => print(e),
-      onDone: () {
-        print('On Done');
-      });
 }
