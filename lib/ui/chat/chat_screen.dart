@@ -150,11 +150,18 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           filePickerItem(Icons.image, 'Image', () async {
             'On Tap image'.toErrorPrint();
-            FilePickerResult? result = await FilePicker.platform
-                .pickFiles(type: FileType.image, allowMultiple: true);
+            FilePickerResult? result = await FilePicker.platform.pickFiles(
+                type: FileType.custom,
+                allowMultiple: true,
+                allowedExtensions: ['jpg', 'png', 'jpeg']);
             if (result != null) {
               result.paths.forEach((element) {
                 element.toString().toSuccessPrint();
+
+
+
+
+
               });
             }
           }),
